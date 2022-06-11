@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Form, Row, Col, Button } from "react-bootstrap";
 const Login = props => {
   const initialUserState = {
     name: "",
@@ -8,51 +8,56 @@ const Login = props => {
   };
   let navigate = useNavigate();
   const [user, setUser] = useState(initialUserState);
+  const [validated, setValidated] = useState(false);
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
-  const login = () => {
-    props.login(user);
-    navigate(-1);
+  const handleSubmit = event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      props.login(user);
+      navigate(-1);
+    }
+    setValidated(true);
   };
 
   return (
-    <div className="submit-form">
-      <div>
-        <h1>Login</h1>
-        <div className="form-group">
-          <label htmlFor="user">Username</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            required
-            value={user.name}
-            onChange={handleInputChange}
-            name="name"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="id">ID</label>
-          <input
-            type="text"
-            className="form-control"
-            id="id"
-            required
-            value={user.id}
-            onChange={handleInputChange}
-            name="id"
-          />
-        </div>
-
-        <button onClick={login} className="btn btn-success">
-          Login
-        </button>
-      </div>
+    <div>
+      <h3>Welcome to Airbnb</h3>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Row className="mb-3">
+          <Form.Group as={Col} md="2" controlId="validationCustom01">
+            <Form.Label>User name</Form.Label>
+            <Form.Control
+              required
+              name="name"
+              type="text"
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid" />
+          </Form.Group>
+        </Row>
+        <Row className="mb-3">
+          <Form.Group as={Col} md="3" controlId="validationCustom03">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              name="pwd"
+              required
+              onChange={handleInputChange}
+            />
+            <Form.Control.Feedback type="invalid" />
+          </Form.Group>
+        </Row>
+        <Button type="submit">Login</Button>
+      </Form>
     </div>
   );
 };

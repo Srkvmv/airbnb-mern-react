@@ -4,6 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Listings from "./components/listings-list";
 import Listing from "./components/listings";
 import Login from "./components/login";
+import DataTable from "./components/data-table";
 import React from "react";
 import "./app.css";
 import { Container, Navbar, Nav } from "react-bootstrap";
@@ -43,7 +44,7 @@ function App() {
               <Link to={"/listings"} className="nav-link">
                 Listings
               </Link>
-
+              <Nav.Link href="/table">Registration table</Nav.Link>
               <Nav.Link href="#" disabled>
                 Become a host
               </Nav.Link>
@@ -78,6 +79,7 @@ function App() {
           <Route path="/listings" element={<Listings />} />
           <Route path="/listings/:id" element={<Listing user={user} />} />
           <Route path="/login" element={<Login login={login} />} />
+          <Route path="/table" element={<DataTable />} />
         </Routes>
       </div>
     </div>

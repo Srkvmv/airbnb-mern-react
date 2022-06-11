@@ -18,7 +18,6 @@ const Listings = props => {
   const retrieveListings = () => {
     ListingDataService.getAll()
       .then(response => {
-        console.log(response.data);
         setListings(response.data.listings);
       })
       .catch(e => {

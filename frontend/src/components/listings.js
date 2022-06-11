@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import * as ReactBootstrap from "react-bootstrap";
 import RegistrationForm from "./registration-form";
 
-const Listing = user => {
+const Listing = props => {
   const initialListingState = {
     id: null,
     name: "",
@@ -18,8 +18,6 @@ const Listing = user => {
     ListingDataService.get(id)
       .then(response => {
         setListing(response.data);
-        console.log(response.data);
-        console.log(user.user.name);
       })
       .catch(e => {
         console.log(e);
@@ -82,12 +80,23 @@ const Listing = user => {
           </ReactBootstrap.Tab>
           <ReactBootstrap.Tab eventKey="amenities" title="Amenities">
             {listing.amenities &&
+              listing.amenities.sort((a, b) => {
+                let x = a.toLowerCase();
+                let y = b.toLowerCase();
+                if (x < y) {
+                  return -1;
+                }
+                if (x > y) {
+                  return 1;
+                }
+                return 0;
+              }) &&
               listing.amenities.map((item, index) => {
                 return <li key={index}>{item}</li>;
               })}
           </ReactBootstrap.Tab>
           <ReactBootstrap.Tab eventKey="confirm" title="Confirm & Pay">
-            {user.user && user.user.name ? (
+            {props.user && props.user.name ? (
               <RegistrationForm listing={listing} />
             ) : (
               <h3>Login to continue</h3>

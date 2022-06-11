@@ -1,7 +1,7 @@
 import moment from "moment";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import ListingDataService from "../services/listing";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Row,
@@ -9,7 +9,6 @@ import {
   Button,
   Table,
   Alert,
-  Overlay,
   OverlayTrigger,
   Tooltip
 } from "react-bootstrap";
@@ -34,8 +33,6 @@ const RegistrationForm = listing => {
   const [submitted, setSubmitted] = useState(false);
   const [days, setDays] = useState(7);
   const [state, setState] = useState(initialState);
-  const [show, setShow] = useState(false);
-  const target = useRef(null);
   const [dateRange, setDateRange] = useState({
     start: moment(),
     end: moment().add(1, "week")
@@ -63,9 +60,10 @@ const RegistrationForm = listing => {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+    } else {
+      saveRegistration();
     }
     setValidated(true);
-    saveRegistration();
   };
 
   const handleApply = (event, picker) => {
